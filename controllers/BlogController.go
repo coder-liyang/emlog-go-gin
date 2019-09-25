@@ -2,18 +2,19 @@ package controllers
 
 import (
 	"emlog-go-gin/models"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 )
 
-func BlogList(c *gin.Context) {
+func BlogRows(c *gin.Context) {
+	page, _ := strconv.ParseInt(c.Query("page"), 10, 64)
+	blogList := models.GetBlogList(page)
+	c.JSON(http.StatusOK, blogList)
 }
 
-func Blog(c *gin.Context) {
+func BlogRow(c *gin.Context) {
 	gid, _ := strconv.ParseInt(c.Param("gid"), 10, 64)
-	fmt.Println(gid)
 	blog := models.GetBlogById(gid)
 	c.JSON(http.StatusOK, blog)
 }

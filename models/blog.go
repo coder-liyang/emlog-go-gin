@@ -27,8 +27,22 @@ type Blog struct {
 //	return "e_blog"
 //}
 
+//通过ID获取一篇文章
 func GetBlogById(gid int64) Blog {
 	var blog Blog
 	Orm.Where(&Blog{Gid:gid}).First(&blog)
 	return blog
+}
+//获取所有文章
+func GetBlogList(page int64) []Blog {
+	var blogList []Blog
+	//var count int64
+	var offset int64
+	var limit int64 = 10
+	offset = (page-1) * limit
+	qs := Orm.Where(&Blog{Hide:"n"}).Limit(limit).Offset(offset)
+	qs = qs.Order("gid desc")
+	qs.Find(&blogList)
+	//fmt.Println(count)
+	return blogList
 }

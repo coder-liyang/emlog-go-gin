@@ -7,6 +7,6 @@ import (
 
 func RegisterApi(r *gin.Engine) {
 	api := r.Group("api/")
-	api.GET("blog/row/:gid", controllers.Blog)
-	api.GET("blog/list", controllers.BlogList)
+	api.GET("blog/row/:gid", controllers.BlogRow)
+	api.GET("blog/rows", controllers.BlogRows)
 }
