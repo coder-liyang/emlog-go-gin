@@ -1,2 +1,4 @@
 *
 !.gitignore
+!config.go
+!config.json.exp

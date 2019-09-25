@@ -1,13 +1,29 @@
 package models
 
 import (
+	"emlog-go-gin/config"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
+
 var Orm *gorm.DB
+
 func ClientDb() {
-	db, err := gorm.Open("mysql", "root:123456@(127.0.0.1)/liyangweb?charset=utf8&parseTime=True&loc=Local")
+	username := config.GetConfigs().Mysql.Username
+	password := config.GetConfigs().Mysql.Password
+	host := config.GetConfigs().Mysql.Host
+	dbname := config.GetConfigs().Mysql.Dbname
+	charset := config.GetConfigs().Mysql.Charset
+	dbLinkTpl := fmt.Sprintf(
+		"%s:%s@(%s)/%s?charset=%s&parseTime=True&loc=Local",
+		username,
+		password,
+		host,
+		dbname,
+		charset,
+	)
+	db, err := gorm.Open("mysql", dbLinkTpl)
 	if err != nil {
 		fmt.Println("链接数据库错误:", err.Error())
 		panic("数据库链接失败")
