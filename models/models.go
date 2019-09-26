@@ -34,7 +34,9 @@ func ClientDb() {
 	}
 	//关闭表名的复数形式
 	db.SingularTable(true)
-
 	Orm = db
+	if config.GetConfigs().Mysql.Debug {
+		Orm = Orm.LogMode(true).Debug()
+	}
 	fmt.Println("数据库链接成功", db)
 }

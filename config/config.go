@@ -6,20 +6,22 @@ import (
 	"io/ioutil"
 	"os"
 )
-
+//所有配置
 type Config struct {
 	Mysql `json:"mysql"`
 }
-
+//MySQL配置
 type Mysql struct {
 	Username string `json:"username"`
-	Password string	`json:"password"`
-	Host string	`json:"host"`
-	Dbname string `json:"dbname"`
-	Charset string `json:"charset"`
+	Password string `json:"password"`
+	Host     string `json:"host"`
+	Dbname   string `json:"dbname"`
+	Charset  string `json:"charset"`
+	Debug    bool   `json:"debug"`
 }
+
 //获取所有配置
-func GetConfigs() Config  {
+func GetConfigs() Config {
 	file, err := os.Open("config/config.json")
 	if err != nil {
 		panic(err)
@@ -34,7 +36,7 @@ func GetConfigs() Config  {
 	return config
 }
 
-func GetConfig2(key string)  {
+func GetConfig2() {
 	file, err := os.Open("config/config.json")
 	if err != nil {
 		panic(err)
