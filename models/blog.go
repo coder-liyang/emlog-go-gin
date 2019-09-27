@@ -18,7 +18,7 @@ type Blog struct {
 	Hide        string `json:"hide"`
 	Checked     string `json:"checked"`
 	AllowRemark string `json:"all_remark"`
-	Password    string `json:"password"`
+	Password    string `json:"-"`
 	Template    string `json:"template"`
 
 	DateFmt string `json:"date_fmt"`
@@ -39,7 +39,10 @@ func GetBlogById(gid int64) Blog {
 }
 
 //获取所有文章
-func GetBlogList(page int64) []Blog {
+func GetBlogList(page int64, keyword string, sortid int64) []Blog {
+	if page < 1 {
+		page = 1
+	}
 	var blogList []Blog
 	//var count int64
 	var offset int64
@@ -48,8 +51,14 @@ func GetBlogList(page int64) []Blog {
 	where := &Blog{}
 	where.Hide = "n"
 	where.Checked = "y"
-	qs := Orm.Where(where).Preload("User").Preload("Sort").Limit(limit).Offset(offset)
-	qs = qs.Order("top, date desc")
+	if sortid > 0 {
+		//查询sort的id
+		where.Sortid = sortid
+	}
+	qs := Orm.Where(where).Preload("User").Preload("Sort").Limit(limit).Offset(offset).Order("top, date desc")
+	if len(keyword) > 0 {
+		qs = qs.Where("title LIKE ?", "%"+keyword+"%")
+	}
 	qs.Find(&blogList)
 	//fmt.Println(count)
 	return blogList
