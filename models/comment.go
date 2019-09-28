@@ -1,5 +1,7 @@
 package models
 
+//import "fmt"
+
 type Comment struct {
 	Cid           int64     `json:"cid"`
 	Gid           int64     `json:"gid"`
@@ -7,21 +9,27 @@ type Comment struct {
 	Date          int64     `json:"date"`
 	Poster        string    `json:"poster"`
 	Comment       string    `json:"comment"`
-	Mail          string    `json:"mail"`
+	Mail          string    `json:"-"`
 	Url           string    `json:"url"`
-	Ip            string    `json:"ip"`
-	Hide          string    `json:"hide"`
+	Ip            string    `json:"-"`
+	Hide          string    `json:"-"`
 	ChildComments []Comment `json:"child_comments"`
 }
 
-func GetCommentList(gid int64, pid int64, page int64) []Comment {
-	var limit int64 = 10
+//评论列表,pageSize传入0,此时会查询所有评论
+func GetCommentList(gid int64, pid int64, page int64, pageSize int64) []Comment {
 	var commentList []Comment
-	Orm.
-		Where("gid = ? and pid = ? and hide = ?", gid, pid, "n").
-		Limit(limit).
-		Offset((page - 1) * limit).
-		Find(&commentList)
-
+	qs := Orm.Where("gid = ? and pid = ? and hide = ?", gid, pid, "n")
+	if pageSize > 0 {
+		qs = qs.Limit(pageSize).Offset((page - 1) * pageSize)
+	}
+	qs.Find(&commentList)
+	//查询有无子评论
+	for index, item := range commentList {
+		childCommentList := GetCommentList(gid, item.Cid, 1, 0)
+		if len(childCommentList) > 0 {
+			commentList[index].ChildComments = childCommentList
+		}
+	}
 	return commentList
 }
