@@ -15,4 +15,6 @@ func RegisterApi(r *gin.Engine) {
 	api.GET("comment/rows/:gid", controllers.CommentRows)
 	//分类列表
 	api.GET("sort/rows/", controllers.SortRows)
+	//导航列表
+	api.GET("navi/rows/", controllers.NaviRows)
 }

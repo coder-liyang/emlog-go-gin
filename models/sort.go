@@ -11,7 +11,6 @@ type Sort struct {
 	ChildSort	[]Sort `json:"child_sort"`
 }
 
-
 //分类列表
 func GetSortList(pid int64) []Sort {
 	var sortList []Sort
