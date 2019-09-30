@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"emlog-go-gin/common"
 	"emlog-go-gin/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -22,21 +23,32 @@ func BlogRows(c *gin.Context) {
 		item.DateFmt = time.Unix(item.Date, 0).Format("2006-01-02 15:04:05")
 		blogSlice = append(blogSlice, item)
 	}
-	c.JSON(http.StatusOK, blogSlice)
+	c.JSON(http.StatusOK, common.GetResponse(0, blogSlice, "OK"))
 }
 
 //一篇文章
 func BlogRow(c *gin.Context) {
 	gid, _ := strconv.ParseInt(c.Param("gid"), 10, 64)
-	blog := models.GetBlogById(gid)
+	blog, err := models.GetBlogById(gid)
+	if err != nil {
+		response := common.EmlogResponse{
+			Error: 0,
+			Data:  nil,
+			Msg:   "OK",
+		}
+		c.JSON(http.StatusOK, common.GetResponse(0, response, "OK"))
+		return
+	}
+
 	blog.DateFmt = time.Unix(blog.Date, 0).Format("2006-01-02 15:04:05")
 
-	//c.JSON(http.StatusOK, blog)
-	c.JSON(http.StatusOK, struct {
+	response := struct {
 		*models.Blog
 		Hide    string `json:"hide,omitempty"`
 		Checked string `json:"checked,omitempty"`
 	}{
 		Blog: &blog,
-	})
+	}
+	c.JSON(http.StatusOK, common.GetResponse(0, response, "OK"))
+	return
 }

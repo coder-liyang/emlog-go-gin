@@ -1,5 +1,7 @@
 package models
 
+import "github.com/jinzhu/gorm"
+
 type Blog struct {
 	Gid         int64  `json:"gid",gorm:"primary_key;auto_increment"`
 	Title       string `json:"title"`
@@ -32,10 +34,14 @@ type Blog struct {
 //}
 
 //通过ID获取一篇文章
-func GetBlogById(gid int64) Blog {
+func GetBlogById(gid int64) (Blog, error) {
 	var blog Blog
-	Orm.Where(&Blog{Gid: gid}).Preload("User").Preload("Sort").First(&blog)
-	return blog
+	err := Orm.Where(&Blog{Gid: gid}).Preload("User").Preload("Sort").First(&blog).Error
+	if err == nil {
+		blog.Views ++
+		Orm.Model(&blog).UpdateColumn("views", gorm.Expr("views + ?", 1))
+	}
+	return blog, err
 }
 
 //获取所有文章
