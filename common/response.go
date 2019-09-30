@@ -6,10 +6,22 @@ type EmlogResponse struct {
 	Msg   string      `json:"msg"`
 }
 
-func GetResponse (error int64, data interface{}, msg string) EmlogResponse {
+var responseMap map[int64]string = map[int64]string{
+	0: "OK",
+}
+
+//统一格式化返回值
+func GetResponse(error int64, data interface{}, msg string) EmlogResponse {
+	if msg == "" {
+		if msg2, ok := responseMap[error]; ok {
+			msg = msg2
+		} else {
+			msg = "未知错误"
+		}
+	}
 	return EmlogResponse{
 		Error: 0,
-		Data: data,
-		Msg: "OK",
+		Data:  data,
+		Msg:   msg,
 	}
 }

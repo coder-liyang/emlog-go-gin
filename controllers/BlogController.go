@@ -31,12 +31,7 @@ func BlogRow(c *gin.Context) {
 	gid, _ := strconv.ParseInt(c.Param("gid"), 10, 64)
 	blog, err := models.GetBlogById(gid)
 	if err != nil {
-		response := common.EmlogResponse{
-			Error: 0,
-			Data:  nil,
-			Msg:   "OK",
-		}
-		c.JSON(http.StatusOK, common.GetResponse(0, response, "OK"))
+		c.JSON(http.StatusOK, common.GetResponse(0, nil, "OK"))
 		return
 	}
 
