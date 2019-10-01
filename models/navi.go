@@ -9,7 +9,7 @@ type Navi struct {
 	Taxis int64
 	Pid int64
 	Isdefault string
-	Type int64
+	Type int64 //1,2,3:系统;4:分类;5:页面;0:自定义
 	Type_id int64
 	ChildNavi []Navi
 }
