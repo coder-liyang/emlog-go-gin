@@ -17,4 +17,6 @@ func RegisterApi(r *gin.Engine) {
 	api.GET("sort/rows/", controllers.SortRows)
 	//导航列表
 	api.GET("navi/rows/", controllers.NaviRows)
+	//友情链接列表
+	api.GET("link/rows/", controllers.LinkRows)
 }
