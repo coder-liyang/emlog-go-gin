@@ -6,7 +6,7 @@ import (
 )
 
 func RegisterApi(r *gin.Engine) {
-	api := r.Group("api/")
+	api := r.Group("api")
 	//一篇文章
 	api.GET("blog/row/:gid", controllers.BlogRow)
 	//文章列表
@@ -14,9 +14,9 @@ func RegisterApi(r *gin.Engine) {
 	//文章评论列表
 	api.GET("comment/rows/:gid", controllers.CommentRows)
 	//分类列表
-	api.GET("sort/rows/", controllers.SortRows)
+	api.GET("sort/rows", controllers.SortRows)
 	//导航列表
-	api.GET("navi/rows/", controllers.NaviRows)
+	api.GET("navi/rows", controllers.NaviRows)
 	//友情链接列表
-	api.GET("link/rows/", controllers.LinkRows)
+	api.GET("link/rows", controllers.LinkRows)
 }
