@@ -38,7 +38,7 @@ func GetNaviList(pid int64) []Navi {
 					Pid:       item.Id,
 					Isdefault: "",
 					Type:      4,
-					Type_id:   0,
+					Type_id:   sortItem.Sid,
 					ChildNavi: nil,
 				})
 			}
