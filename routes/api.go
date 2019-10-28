@@ -21,6 +21,8 @@ func RegisterApi(r *gin.Engine) {
 	api.GET("navi/rows", controllers.NaviRows)
 	//友情链接列表
 	api.GET("link/rows", controllers.LinkRows)
+	//发表评论
+	api.POST("comment/create", controllers.CommentCreate)
 }
 
 func Cors() gin.HandlerFunc {

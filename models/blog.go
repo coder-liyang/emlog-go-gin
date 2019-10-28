@@ -19,7 +19,7 @@ type Blog struct {
 	Sortop      string `json:"sortop"`
 	Hide        string `json:"hide"`
 	Checked     string `json:"checked"`
-	AllowRemark string `json:"all_remark"`
+	AllowRemark string `json:"all_remark"`//是否允许评论
 	Password    string `json:"-"`
 	Template    string `json:"template"`
 

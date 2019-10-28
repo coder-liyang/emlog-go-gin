@@ -33,3 +33,15 @@ func GetCommentList(gid int64, pid int64, page int64, pageSize int64) []Comment 
 	}
 	return commentList
 }
+
+//取一条评论
+func GetComment(cid int64) (Comment, error) {
+	var comment Comment
+	err := Orm.Where("cid = ?", cid).First(&comment).Error
+	return comment, err
+}
+
+func CreateComment(comment *Comment) (Comment, error){
+	err := Orm.Create(&comment).Error
+	return *comment, err
+}
