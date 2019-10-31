@@ -1,9 +1,7 @@
 package models
 
-//import "fmt"
-
 type Comment struct {
-	Cid           int64     `json:"cid"`
+	Cid           int64     `json:"cid",gorm:"primary_key;auto_increment"`
 	Gid           int64     `json:"gid"`
 	Pid           int64     `json:"pid"`
 	Date          int64     `json:"date"`
@@ -42,7 +40,7 @@ func GetComment(cid int64) (Comment, error) {
 	return comment, err
 }
 
-func CreateComment(comment *Comment) (Comment, error){
+func CreateComment(comment *Comment) error{
 	err := Orm.Create(&comment).Error
-	return *comment, err
+	return err
 }

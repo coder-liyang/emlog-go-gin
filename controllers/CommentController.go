@@ -21,6 +21,10 @@ func CommentRows(c *gin.Context) {
 func CommentCreate(c *gin.Context) {
 	gid, _ := strconv.ParseInt(c.Query("gid"), 10, 64)
 	pid, _ := strconv.ParseInt(c.Query("pid"), 10, 64)
+	if gid == 0 {
+		c.JSON(http.StatusOK, common.GetResponse(10, nil, "gid为必填"))
+		return
+	}
 	content, hasContent := c.GetPostForm("content")
 	if hasContent == false {
 		c.JSON(http.StatusOK, common.GetResponse(10, nil, "评论内容不可为空"))
@@ -36,9 +40,13 @@ func CommentCreate(c *gin.Context) {
 		return
 	}
 	if pid != 0 {
-		_, err := models.GetComment(pid)
+		pComment, err := models.GetComment(pid)
 		if err != nil {
 			c.JSON(http.StatusOK, common.GetResponse(10, nil, "父评论不存在"))
+			return
+		}
+		if pComment.Gid != gid {
+			c.JSON(http.StatusOK, common.GetResponse(10, nil, "父评论与文章不匹配"))
 			return
 		}
 	}
@@ -54,7 +62,7 @@ func CommentCreate(c *gin.Context) {
 		Hide:          "n",
 		ChildComments: nil,
 	}
-	comment, err = models.CreateComment(&comment)
+	err = models.CreateComment(&comment)
 	if err != nil {
 		c.JSON(http.StatusOK, common.GetResponse(10, nil, "评论发表失败"))
 	}
