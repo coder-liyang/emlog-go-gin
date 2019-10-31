@@ -20,6 +20,7 @@ type Comment struct {
 func GetCommentList(gid int64, pid int64, page int64, pageSize int64) []Comment {
 	var commentList []Comment
 	qs := Orm.Where("gid = ? and pid = ? and hide = ?", gid, pid, "n")
+	qs = qs.Order("date desc")
 	if pageSize > 0 {
 		qs = qs.Limit(pageSize).Offset((page - 1) * pageSize)
 	}
