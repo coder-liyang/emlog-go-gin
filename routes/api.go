@@ -23,6 +23,8 @@ func RegisterApi(r *gin.Engine) {
 	api.GET("link/rows", controllers.LinkRows)
 	//发表评论
 	api.POST("comment/create", controllers.CommentCreate)
+	//标签列表
+	api.GET("tag/rows", controllers.TagRows)
 }
 
 func Cors() gin.HandlerFunc {
