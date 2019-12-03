@@ -2,6 +2,7 @@ package models
 
 import "github.com/jinzhu/gorm"
 
+//日志数据结构
 type Blog struct {
 	Gid         int64  `json:"gid",gorm:"primary_key;auto_increment"`
 	Title       string `json:"title"`
@@ -19,13 +20,19 @@ type Blog struct {
 	Sortop      string `json:"sortop"`
 	Hide        string `json:"hide"`
 	Checked     string `json:"checked"`
-	AllowRemark string `json:"all_remark"`//是否允许评论
+	AllowRemark string `json:"all_remark"` //是否允许评论
 	Password    string `json:"-"`
 	Template    string `json:"template"`
 
 	DateFmt string `json:"date_fmt"`
 	User    User   `gorm:"foreignkey:Author;association_foreignkey:Uid"`
 	Sort    Sort   `gorm:"foreignkey:Sortid;association_foreignkey:Sid"`
+}
+
+//归档数据结构,显示效果 2019年4月(2)
+type Record struct {
+	Ym    string `json:"ym"`
+	Count string `json:"count"`
 }
 
 //指定表名
@@ -38,7 +45,7 @@ func GetBlogById(gid int64) (Blog, error) {
 	var blog Blog
 	err := Orm.Where(&Blog{Gid: gid}).Preload("User").Preload("Sort").First(&blog).Error
 	if err == nil {
-		blog.Views ++
+		blog.Views++
 		Orm.Model(&blog).UpdateColumn("views", gorm.Expr("views + ?", 1))
 	}
 	return blog, err
@@ -66,6 +73,13 @@ func GetBlogList(page int64, keyword string, sortid int64) []Blog {
 		qs = qs.Where("title LIKE ?", "%"+keyword+"%")
 	}
 	qs.Find(&blogList)
-	//fmt.Println(count)
 	return blogList
+}
+
+//日志归档数据
+func GetRecord() []Record {
+	sql := "select from_unixtime(`date`, '%Y年%m月') as ym, count(*) as count from e_blog where hide = 'n' and checked = 'y' and type = 'blog' group by ym order by `ym` desc"
+	var records []Record
+	Orm.Raw(sql).Find(&records)
+	return records
 }

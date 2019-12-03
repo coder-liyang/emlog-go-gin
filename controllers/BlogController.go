@@ -47,3 +47,8 @@ func BlogRow(c *gin.Context) {
 	c.JSON(http.StatusOK, common.GetResponse(0, response, "OK"))
 	return
 }
+//文章归档
+func BlogRecord(c *gin.Context) {
+	record := models.GetRecord()
+	c.JSON(http.StatusOK, common.GetResponse(0, record, "OK"))
+}
