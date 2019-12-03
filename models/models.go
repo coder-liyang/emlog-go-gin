@@ -30,7 +30,8 @@ func ClientDb() {
 	}
 	//表前缀
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
-		return "e_" + defaultTableName
+		//return "e_" + defaultTableName
+		return config.GetConfigs().Mysql.Prefix + defaultTableName
 	}
 	//关闭表名的复数形式
 	db.SingularTable(true)

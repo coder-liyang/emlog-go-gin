@@ -1,6 +1,9 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"emlog-go-gin/config"
+	"github.com/jinzhu/gorm"
+)
 
 //日志数据结构
 type Blog struct {
@@ -37,7 +40,7 @@ type Record struct {
 
 //指定表名
 //func (m *Blog) TableName() string {
-//	return "e_blog"
+//	return config.GetConfigs().Mysql.Prefix + "blog"
 //}
 
 //通过ID获取一篇文章
@@ -78,8 +81,16 @@ func GetBlogList(page int64, keyword string, sortid int64) []Blog {
 
 //日志归档数据
 func GetRecord() []Record {
-	sql := "select from_unixtime(`date`, '%Y年%m月') as ym, count(*) as count from e_blog where hide = 'n' and checked = 'y' and type = 'blog' group by ym order by `ym` desc"
 	var records []Record
-	Orm.Raw(sql).Find(&records)
+	//sql := "select from_unixtime(`date`, '%Y年%m月') as ym, count(*) as count from e_blog where hide = 'n' and checked = 'y' and type = 'blog' group by ym order by `ym` desc"
+	//Orm.Raw(sql).Find(&records)
+	//这样更优雅一些
+
+	Orm.Table(config.GetConfigs().Mysql.Prefix + "blog").//"e_blog"
+		Select("from_unixtime(`date`, '%Y年%m月') as ym, count(*) as count").
+		Where("hide = 'n' and checked = 'y' and type = 'blog'").
+		Group("ym").
+		Order("ym desc").
+		Find(&records)
 	return records
 }

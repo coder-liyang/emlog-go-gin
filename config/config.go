@@ -2,8 +2,6 @@ package config
 
 import (
 	"encoding/json"
-	"fmt"
-	"io/ioutil"
 	"os"
 )
 //所有配置
@@ -18,6 +16,7 @@ type Mysql struct {
 	Dbname   string `json:"dbname"`
 	Charset  string `json:"charset"`
 	Debug    bool   `json:"debug"`
+	Prefix	 string `json:"prefix"`
 }
 
 //获取所有配置
@@ -34,23 +33,4 @@ func GetConfigs() Config {
 		panic(err)
 	}
 	return config
-}
-
-func GetConfig2() {
-	file, err := os.Open("config/config.json")
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-	fd, err := ioutil.ReadAll(file)
-	if err != nil {
-		panic(err)
-	}
-	config := Config{}
-	conf := string(fd)
-	err = json.Unmarshal([]byte(conf), &config)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(config.Mysql.Dbname)
 }
