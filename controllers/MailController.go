@@ -16,4 +16,6 @@ func Send(c *gin.Context)  {
 func SendMailDemo() {
 	time.Sleep(time.Duration(5)*time.Second)
 	fmt.Println("send mail demo func")
+
+
 }

@@ -7,8 +7,9 @@ import (
 )
 
 func RegisterApi(r *gin.Engine) {
-	r.Use(Cors())
-	api := r.Group("api")
+	r.GET("ws", controllers.WsHandler)
+	//r.Use(Cors())
+	api := r.Group("api").Use(Cors())
 	//一篇文章
 	api.GET("blog/row/:gid", controllers.BlogRow)
 	//文章列表
