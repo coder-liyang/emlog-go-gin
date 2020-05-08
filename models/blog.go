@@ -44,7 +44,7 @@ type Record struct {
 //}
 
 //通过ID获取一篇文章
-func GetBlogById(gid int64) (Blog, error) {
+func (b Blog) GetBlogById(gid int64) (Blog, error) {
 	var blog Blog
 	err := Orm.Where(&Blog{Gid: gid}).Preload("User").Preload("Sort").First(&blog).Error
 	if err == nil {
@@ -80,7 +80,7 @@ func (b Blog) GetBlogList(page int64, keyword string, sortid int64) []Blog {
 }
 
 //日志归档数据
-func GetRecord() []Record {
+func (b Blog) GetRecord() []Record {
 	var records []Record
 	//sql := "select from_unixtime(`date`, '%Y年%m月') as ym, count(*) as count from e_blog where hide = 'n' and checked = 'y' and type = 'blog' group by ym order by `ym` desc"
 	//Orm.Raw(sql).Find(&records)

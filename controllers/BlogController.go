@@ -29,7 +29,7 @@ func BlogRows(c *gin.Context) {
 //一篇文章
 func BlogRow(c *gin.Context) {
 	gid, _ := strconv.ParseInt(c.Param("gid"), 10, 64)
-	blog, err := models.GetBlogById(gid)
+	blog, err := models.Blog{}.GetBlogById(gid)
 	if err != nil {
 		c.JSON(http.StatusOK, common.GetResponse(0, nil, "OK"))
 		return
@@ -49,6 +49,6 @@ func BlogRow(c *gin.Context) {
 }
 //文章归档
 func BlogRecord(c *gin.Context) {
-	record := models.GetRecord()
+	record := models.Blog{}.GetRecord()
 	c.JSON(http.StatusOK, common.GetResponse(0, record, "OK"))
 }
