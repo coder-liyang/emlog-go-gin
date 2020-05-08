@@ -37,6 +37,7 @@ func WsHandler(c *gin.Context) {
 			goto ERR
 		}
 		data = append([]byte("From service: "), data...)
+		//conn.WriteJSON([]string{"a","b","c"});
 		if err = conn.WriteMessage(websocket.TextMessage, data); err !=nil {
 			goto ERR
 		}
