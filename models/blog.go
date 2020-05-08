@@ -55,7 +55,7 @@ func GetBlogById(gid int64) (Blog, error) {
 }
 
 //获取所有文章
-func GetBlogList(page int64, keyword string, sortid int64) []Blog {
+func (b Blog) GetBlogList(page int64, keyword string, sortid int64) []Blog {
 	if page < 1 {
 		page = 1
 	}

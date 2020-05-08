@@ -17,7 +17,7 @@ func BlogRows(c *gin.Context) {
 	if err != nil {
 		sortid = 0
 	}
-	blogList := models.GetBlogList(page, keyword, sortid)
+	blogList := models.Blog{}.GetBlogList(page, keyword, sortid)
 	blogSlice := make([]interface{}, 0, len(blogList))
 	for _, item := range blogList {
 		item.DateFmt = time.Unix(item.Date, 0).Format("2006-01-02 15:04:05")
