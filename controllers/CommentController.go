@@ -30,7 +30,7 @@ func CommentCreate(c *gin.Context) {
 		c.JSON(http.StatusOK, common.GetResponse(10, nil, "评论内容不可为空"))
 		return
 	}
-	blog, err := models.GetBlogById(gid)
+	blog, err := models.Blog{}.GetBlogById(gid)
 	if err != nil {
 		c.JSON(http.StatusOK, common.GetResponse(10, nil, "文章不存在"))
 		return
