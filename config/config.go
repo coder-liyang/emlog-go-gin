@@ -4,11 +4,13 @@ import (
 	"encoding/json"
 	"os"
 )
-//所有配置
+
+// Config 所有配置
 type Config struct {
 	Mysql `json:"mysql"`
 }
-//MySQL配置
+
+//Mysql MySQL配置
 type Mysql struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -16,7 +18,7 @@ type Mysql struct {
 	Dbname   string `json:"dbname"`
 	Charset  string `json:"charset"`
 	Debug    bool   `json:"debug"`
-	Prefix	 string `json:"prefix"`
+	Prefix   string `json:"prefix"`
 }
 
 //获取所有配置

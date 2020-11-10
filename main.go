@@ -6,7 +6,6 @@ import (
 	"net/http"
 )
 
-
 func main() {
 	models.ClientDb()
 	r := routes.RegisterRoutes()
